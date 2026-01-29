@@ -1,0 +1,13 @@
+# Servicio para app Flask.
+apiVersion: v1
+kind: ???
+metadata:
+  name: web
+spec:
+  type: NodePort
+  selector:
+    app: web
+  ports:
+    - port: 5000
+      targetPort: 5000
+      nodePort: 32000

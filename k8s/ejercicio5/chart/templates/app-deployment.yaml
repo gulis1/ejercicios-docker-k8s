@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+spec:
+  replicas: {{ .Values.app.replicas }}
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+      - name: web
+        image: {{ .Values.app.image }}
+        ports:
+        - name: http
+          containerPort: 8080
+        env:
+        {{- range $k, $v := .Values.app.env }}
+        - name: {{ $k }}
+          value: {{ $v | quote }}
+        {{- end }}
+        volumeMounts:
+        - mountPath: /files
+          name: user-files
+      volumes:
+      - name: user-files
+        persistentVolumeClaim:
+          claimName: myfiles

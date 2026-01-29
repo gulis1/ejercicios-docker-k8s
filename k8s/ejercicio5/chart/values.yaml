@@ -1,0 +1,25 @@
+nginx:
+  image: nginx:latest
+  replicas: 1
+  nodePort: 30080
+
+app:
+  image: gulis1/myfilesapp:3.0
+  replicas: 1
+  nodePort: 32000
+  volume:
+    size: 1Gi
+  env:
+    DB_HOST: db
+    DB_NAME: appdb
+
+db:
+  image: postgres:latest
+  replicas: 1
+  servicePort: 5432
+  volume:
+    size: 2Gi
+  config:
+    POSTGRES_DB: appdb
+    POSTGRES_USER: appuser
+    POSTGRES_PASSWORD: apppass

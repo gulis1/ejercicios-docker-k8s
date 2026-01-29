@@ -1,0 +1,13 @@
+# PVC para ficheros de usuario
+apiVersion: v1
+kind: ???
+metadata:
+  # Tiene que coincidir con el que pone en el deployment!!
+  name: ???
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+

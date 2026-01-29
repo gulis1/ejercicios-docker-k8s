@@ -1,0 +1,68 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-initdb
+data:
+  init.sql: |
+    CREATE TABLE users (
+      username VARCHAR(50) PRIMARY KEY,
+      password VARCHAR(50) NOT NULL
+    );
+
+    INSERT INTO users (username, password) VALUES
+      ('alice', 'password1'),
+      ('bob',   'password2'),
+      ('carol', 'password3'),
+      ('dave',  'password4'),
+      ('eve',   'password5');
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:latest
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              value: mydb
+            - name: POSTGRES_USER
+              value: usuario
+            - name: POSTGRES_PASSWORD
+              value: password
+          volumeMounts:
+            - name: initdb
+              mountPath: /docker-entrypoint-initdb.d
+            - name: postgres-storage
+              mountPath: /var/lib/postgresql
+      volumes:
+        - name: initdb
+          configMap:
+            name: postgres-initdb
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: postgres-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mydb-service
+spec:
+  selector:
+    app: postgres
+  ports:
+    - port: 5432
+      targetPort: 5432
+

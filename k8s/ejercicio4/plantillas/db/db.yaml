@@ -1,0 +1,40 @@
+# Deployment para base de datos Postgres
+apiVersion: apps/v1
+kind: ???
+metadata:
+  name: db
+spec:
+  replicas: ???
+  selector:
+    matchLabels:
+      app: db
+  template:
+    metadata:
+      labels:
+        app: db
+    spec:
+      containers:
+        - name: postgres
+          image: ??? # Imagen de postgres de DockerHub
+          env:
+            - name: ???  # Nombre de la DB
+              value: appdb
+            - name: ??? # Usuario de la DB
+              value: appuser
+            - name: ??? # Contraseña de la DB
+              value: apppass
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - name: db-data
+              mountPath: /var/lib/postgresql
+            - name: db-init
+              mountPath: /docker-entrypoint-initdb.d
+      volumes:
+        - name: db-data
+          persistentVolumeClaim:
+            claimName: ???
+        - name: db-init
+          configMap:
+            name: ??? # Nombre del configmap para iniciar DB
+

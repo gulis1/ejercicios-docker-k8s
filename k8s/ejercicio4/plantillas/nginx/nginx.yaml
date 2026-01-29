@@ -1,0 +1,30 @@
+# Deployment NGINX
+apiVersion: apps/v1
+kind: ???
+metadata:
+  name: nginx
+spec:
+  replicas: ???
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: ??? # Imagen nginx de docker hub
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: ???
+              # Ver en Docker Hub donde tiene que ir montado el volúmen
+              # para que se sirvan los ficheros
+              mountPath: ???
+              readOnly: true
+      volumes:
+        - name: user-files
+          persistentVolumeClaim:
+            claimName: ???

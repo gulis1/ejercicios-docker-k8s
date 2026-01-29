@@ -1,0 +1,10 @@
+# ConfigMap para iniciar la base de datos.
+apiVersion: v1
+kind: ???
+metadata:
+  name: db-init-sql
+data:
+  init.sql: |
+# script SQL para iniciar DB (Cuidado indentacion)
+    ??? 
+    

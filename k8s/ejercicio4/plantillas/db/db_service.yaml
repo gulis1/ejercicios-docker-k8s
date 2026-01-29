@@ -1,0 +1,11 @@
+# Servicio para DB
+apiVersion: v1
+kind: ???
+metadata:
+  name: db
+spec:
+  selector:
+    app: db
+  ports:
+    - port: 5432
+

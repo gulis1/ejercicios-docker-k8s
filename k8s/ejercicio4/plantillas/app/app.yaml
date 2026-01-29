@@ -1,0 +1,31 @@
+# Deployment app flask
+apiVersion: apps/v1
+kind: ???
+metadata:
+  name: web
+spec:
+  replicas: ???
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+        - name: web
+          image: gulis1/myfilesapp:3.0
+          env:
+            - name: DB_HOST
+              value: ???
+          ports:
+            - containerPort: 5000
+          volumeMounts:
+            - name: user-files
+              mountPath: ???
+      volumes:
+        - name: user-files
+          persistentVolumeClaim:
+            claimName: ???
+
